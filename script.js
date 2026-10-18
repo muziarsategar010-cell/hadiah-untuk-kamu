@@ -1,56 +1,39 @@
+```javascript
+document.addEventListener("DOMContentLoaded", function () {
 
-const pinForm = document.getElementById("pinForm");
-const pinInput = document.getElementById("pin");
-const pinMessage = document.getElementById("pinMessage");
+    // PENGHITUNG HARI BERSAMA
+    const daysElement = document.getElementById("daysTogether");
 
-const login = document.getElementById("login");
-const content = document.getElementById("content");
+    // GANTI DENGAN TANGGAL KALIAN JADIAN
+    // Format: TAHUN-BULAN-TANGGAL
+    const tanggalJadian = new Date("2025-01-01T00:00:00");
 
-// GANTI dengan tanggal jadian kalian.
-// Format: TAHUN-BULAN-TANGGAL
-const tanggalJadian = "2025-11-17";
+    if (daysElement) {
+        const sekarang = new Date();
 
-pinForm.addEventListener("submit", function (event) {
-    event.preventDefault();
+        // Menghitung selisih berdasarkan tanggal kalender
+        const awal = new Date(
+            tanggalJadian.getFullYear(),
+            tanggalJadian.getMonth(),
+            tanggalJadian.getDate()
+        );
 
-    if (pinInput.value === "010608") {
-        login.hidden = true;
-        content.hidden = false;
+        const hariIni = new Date(
+            sekarang.getFullYear(),
+            sekarang.getMonth(),
+            sekarang.getDate()
+        );
 
-        hitungHariJadian();
-        window.scrollTo(0, 0);
-    } else {
-        pinMessage.textContent =
-            "PIN-nya belum benar, coba lagi ya ♡";
+        const selisih = Math.floor(
+            (hariIni - awal) / (1000 * 60 * 60 * 24)
+        );
 
-        pinInput.value = "";
-        pinInput.focus();
+        if (selisih >= 0) {
+            daysElement.textContent = selisih + " Hari ♡";
+        } else {
+            daysElement.textContent = "♡";
+        }
     }
+
 });
-
-function hitungHariJadian() {
-    const awal = new Date(tanggalJadian + "T00:00:00");
-    const sekarang = new Date();
-
-    awal.setHours(0, 0, 0, 0);
-    sekarang.setHours(0, 0, 0, 0);
-
-    const elemen = document.getElementById("daysTogether");
-
-    if (Number.isNaN(awal.getTime())) {
-        elemen.textContent = "♡";
-        return;
-    }
-
-    if (sekarang < awal) {
-        elemen.textContent = "Segera ♡";
-        return;
-    }
-
-    const selisih = sekarang.getTime() - awal.getTime();
-    const hari = Math.floor(
-        selisih / (1000 * 60 * 60 * 24)
-    );
-
-    elemen.textContent = hari.toLocaleString("id-ID");
-}
+```
